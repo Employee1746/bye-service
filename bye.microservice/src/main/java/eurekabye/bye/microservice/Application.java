@@ -2,20 +2,25 @@ package eurekabye.bye.microservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.annotation.KafkaListener;
 
 @SpringBootApplication
+@EnableKafka
 public class Application {
+	final
+	ByeService byeService;
+
+	public Application(ByeService byeService) {
+		this.byeService = byeService;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@Bean(name = "bye")
-	public Bye getHello() {
-		Bye hello = new Bye();
-		hello.setMessage("Всего доброго!");
-		return hello;
+	@KafkaListener(topics="hello")
+	public void msgListener(String msg){
+		System.out.println(msg);
 	}
-
 }

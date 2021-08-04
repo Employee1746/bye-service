@@ -6,16 +6,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ByeController {
 
-    final Bye bye;
+    final ByeService byeService;
 
-    public ByeController(Bye bye) {
-        this.bye = bye;
+    public ByeController(ByeService byeService) {
+        this.byeService = byeService;
     }
 
     @GetMapping("/bye")
-    public Bye sayHello() {
-        return bye;
+    public String sayBye() {
+        Long helloCount = byeService.countGreetings();
+        return "Всего доброго! Вы здоровались " + helloCount + " раз";
     }
-
-
 }
